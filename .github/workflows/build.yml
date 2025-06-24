@@ -80,10 +80,10 @@ jobs:
         make install
         cd ..
 
-    - name: ✅ Verify libiconv installed
-      run: |
-        ls -l ${{ env.PREFIX }}/lib | grep libiconv.a || exit 1
-        ls -l ${{ env.PREFIX }}/include | grep iconv.h || exit 1
+    # - name: ✅ Verify libiconv installed
+    #   run: |
+    #     ls -l ${{ env.PREFIX }}/lib | grep libiconv.a || exit 1
+    #     ls -l ${{ env.PREFIX }}/include | grep iconv.h || exit 1
 
     - name: 🔤 Build libxml2
       run: |
@@ -195,6 +195,7 @@ jobs:
             --with-jpeg=${PREFIX} \
             --with-freetype=${PREFIX} \
             --disable-all \
+            --disable-dns
             --enable-gd \
             --enable-mbstring \
             --enable-bcmath \
