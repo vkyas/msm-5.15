@@ -87,9 +87,12 @@ jobs:
 
     - name: 🔤 Build libxml2
       run: |
-        wget -q https://download.gnome.org/sources/libxml2/2.14/libxml2-2.14.4.tar.xz
-        tar -xf libxml2-2.14.4.tar.xz
-        cd libxml2-2.14.4
+        # wget -q https://download.gnome.org/sources/libxml2/2.14/libxml2-2.14.4.tar.xz
+        # tar -xf libxml2-2.14.4.tar.xz
+        # cd libxml2-2.14.4
+        wget -q https://download.gnome.org/sources/libxml2/2.10/libxml2-2.10.3.tar.xz
+        tar -xf libxml2-2.10.3.tar.xz
+        cd libxml2-2.10.3
         ./configure \
           --host=${{ env.HOST_TRIPLE }} \
           --prefix=${{ env.PREFIX }} \
