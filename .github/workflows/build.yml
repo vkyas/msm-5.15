@@ -162,6 +162,10 @@ jobs:
         tar -xzf php-${{ env.PHP_VERSION }}.tar.gz
         echo "PHP_SOURCE=php-${{ env.PHP_VERSION }}" >> $GITHUB_ENV
 
+    - name: Disable PHP DNS extension (skip dns.c)
+      run: |
+        mv ext/standard/dns.c ext/standard/dns.c.disabled || true
+    
     - name: 🗂️ Prepare build directories
       run: |
         mkdir -p ${{ env.WORKDIR }}
@@ -186,7 +190,7 @@ jobs:
         export PKG_CONFIG_PATH="${PREFIX}/lib/pkgconfig:${PKG_CONFIG_PATH:-}"
     
         if ! ../${PHP_SOURCE}/configure \
-            --build=x86_64-pc-linux-gnu \
+            --build=arm-linux-androideabi \
             --host=${HOST_TRIPLE} \
             --prefix=/data/php \
             --with-libxml \
