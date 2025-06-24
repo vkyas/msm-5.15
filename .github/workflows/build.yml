@@ -229,12 +229,19 @@ jobs:
         tail -n 200 config.log
         echo "---- Searching for errors in config.log ----"
         grep -i -A20 -B20 error config.log || echo "No error found"
+
+    - name: 🫵 Patch dns.c to disable DNS functions
+      run: |
+        sed -i 's/res_ninit(/\/\/res_ninit(/g' php-${{ env.PHP_VERSION }}/ext/standard/dns.c
+        sed -i 's/res_nsearch(/\/\/res_nsearch(/g' php-${{ env.PHP_VERSION }}/ext/standard/dns.c
+        sed -i 's/res_nclose(/\/\/res_nclose(/g' php-${{ env.PHP_VERSION }}/ext/standard/dns.c
+        sed -i 's/dn_skipname(/\/\/dn_skipname(/g' php-${{ env.PHP_VERSION }}/ext/standard/dns.c
+        echo "DNS functions disabled in dns.c"
         
     - name: 🧱 Build PHP
       working-directory: ${{ env.WORKDIR }}
       run: |
         make -j$(nproc) || (echo "=== Build failed, showing ext/standard logs ==="; ls ext/standard/*.log; cat ext/standard/*.log || echo "No logs found"; false)
-
         
     - name: 🧹 Post-install setup
       run: |
