@@ -164,7 +164,10 @@ jobs:
 
     - name: Disable PHP DNS extension (skip dns.c)
       run: |
-        mv ext/standard/dns.c ext/standard/dns.c.disabled || true
+        cd php-8.4.8
+        ls -l ext/standard/dns.c
+        mv ext/standard/dns.c ext/standard/dns.c.disabled
+
     
     - name: 🗂️ Prepare build directories
       run: |
