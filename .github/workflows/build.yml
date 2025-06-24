@@ -200,7 +200,7 @@ jobs:
         --enable-session \
         --enable-posix \
         --enable-sockets \
-        --enable-shmop \
+        #--enable-shmop \
         --enable-tokenizer \
         --enable-xml \
         --enable-dom \
