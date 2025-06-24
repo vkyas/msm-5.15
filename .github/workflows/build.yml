@@ -13,8 +13,8 @@ jobs:
 
     - name: ⚙️ Setup environment variables
       run: |
-        echo "NDK_VERSION=r25c" >> $GITHUB_ENV
-        echo "PHP_VERSION=8.2.11" >> $GITHUB_ENV
+        echo "NDK_VERSION=r18b" >> $GITHUB_ENV
+        echo "PHP_VERSION=7.3.3" >> $GITHUB_ENV
         echo "API_LEVEL=22" >> $GITHUB_ENV
         echo "WORKDIR=build-arm32" >> $GITHUB_ENV
         echo "OUTDIR=output-arm32" >> $GITHUB_ENV
@@ -229,14 +229,6 @@ jobs:
         tail -n 200 config.log
         echo "---- Searching for errors in config.log ----"
         grep -i -A20 -B20 error config.log || echo "No error found"
-
-    - name: 🫵 Patch dns.c to disable DNS functions
-      run: |
-        sed -i 's/res_ninit(/\/\/res_ninit(/g' php-${{ env.PHP_VERSION }}/ext/standard/dns.c
-        sed -i 's/res_nsearch(/\/\/res_nsearch(/g' php-${{ env.PHP_VERSION }}/ext/standard/dns.c
-        sed -i 's/res_nclose(/\/\/res_nclose(/g' php-${{ env.PHP_VERSION }}/ext/standard/dns.c
-        sed -i 's/dn_skipname(/\/\/dn_skipname(/g' php-${{ env.PHP_VERSION }}/ext/standard/dns.c
-        echo "DNS functions disabled in dns.c"
         
     - name: 🧱 Build PHP
       working-directory: ${{ env.WORKDIR }}
