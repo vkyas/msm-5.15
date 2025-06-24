@@ -18,7 +18,7 @@ jobs:
         echo "API_LEVEL=22" >> $GITHUB_ENV
         echo "WORKDIR=build-arm32" >> $GITHUB_ENV
         echo "OUTDIR=output-arm32" >> $GITHUB_ENV
-        echo "NDK_HOME=$GITHUB_WORKSPACE/android-ndk-r25c" >> $GITHUB_ENV
+        echo "NDK_HOME=\$GITHUB_WORKSPACE/android-ndk-\$NDK_VERSION" >> $GITHUB_ENV
         echo "HOST_TRIPLE=armv7a-linux-androideabi" >> $GITHUB_ENV
         echo "EXTENSION_DIR=/data/adb/php7/files/bin" >> $GITHUB_ENV
         echo "ZEND_EXTENSION_DIR=no-debug-non-zts-20190902" >> $GITHUB_ENV
