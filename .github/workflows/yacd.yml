@@ -1,4 +1,4 @@
-name: Build Yacd-meta
+name: Yacd-meta
 
 on:
   push:
@@ -14,11 +14,16 @@ jobs:
       uses: actions/checkout@v4
 
     - name: Clone Yacd-meta source
-      run: git clone --depth=1 https://github.com/MetaCubeX/Yacd-meta.git
+      run: |
+        git clone --depth=1 https://github.com/MetaCubeX/Yacd-meta.git
+        ls -la
+      working-directory: .
 
     - name: Change to Yacd-meta directory
-      run: cd Yacd-meta && pwd
-      working-directory: ./Yacd-meta
+      run: |
+        cd Yacd-meta
+        pwd
+      working-directory: .
 
     - name: Setup Node.js
       uses: actions/setup-node@v4
@@ -29,6 +34,9 @@ jobs:
 
     - name: Install pnpm
       run: npm install -g pnpm
+
+    - name: Verify pnpm
+      run: pnpm --version
 
     - name: Install dependencies
       run: pnpm install
