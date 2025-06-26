@@ -1,4 +1,4 @@
-name: Yacd-meta
+name: Build Yacd-meta
 
 on:
   push:
@@ -10,8 +10,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout source code
+    - name: Checkout this workflow repo
       uses: actions/checkout@v4
+
+    - name: Clone Yacd-meta source
+      run: git clone --depth=1 https://github.com/MetaCubeX/Yacd-meta.git
+
+    - name: Change to Yacd-meta directory
+      working-directory: ./Yacd-meta
+      run: echo "Moved into repo"
 
     - name: Setup Node.js
       uses: actions/setup-node@v3
@@ -19,20 +26,25 @@ jobs:
         node-version: '20'
         cache: 'pnpm'
 
-    - name: Install pnpm
-      run: npm install -g pnpm
+    - name: Enable and install pnpm
+      run: |
+        corepack enable
+        corepack prepare pnpm@latest --activate
 
     - name: Install dependencies
+      working-directory: ./Yacd-meta
       run: pnpm install
 
     - name: Build project
+      working-directory: ./Yacd-meta
       run: pnpm build
 
     - name: Zip dist folder
+      working-directory: ./Yacd-meta
       run: |
         cd dist
-        zip -r ../yacd-meta.zip .
-        cd ..
+        zip -r ../../yacd-meta.zip .
+        cd ../..
 
     - name: Upload artifact (ZIP)
       uses: actions/upload-artifact@v4
