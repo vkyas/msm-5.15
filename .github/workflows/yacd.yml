@@ -10,30 +10,30 @@ jobs:
     runs-on: ubuntu-22.04
 
     steps:
-    - name: Checkout source
+    - name: 🛎️ Checkout source
       uses: actions/checkout@v4
 
-    - name: Setup Node.js
+    - name: 🧰 Setup Node.js
       uses: actions/setup-node@v4
       with:
         node-version: 20
         cache: 'pnpm'
 
-    - name: Install pnpm
+    - name: 📦 Install pnpm
       uses: pnpm/action-setup@v3
       with:
         version: 10.12.1
 
-    - name: Install dependencies
+    - name: 📥 Install dependencies
       run: pnpm install
 
-    - name: Build project
+    - name: 🏗️ Build project (vite)
       run: pnpm build
 
-    - name: Zip output
+    - name: 📦 Zip build output
       run: zip -r dashboard.zip public/
 
-    - name: Upload artifact
+    - name: 📤 Upload dashboard.zip
       uses: actions/upload-artifact@v4
       with:
         name: dashboard
