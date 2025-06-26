@@ -1,4 +1,4 @@
-name: Build Yacd-meta
+name: Yacd-meta
 
 on:
   push:
@@ -10,26 +10,27 @@ jobs:
     runs-on: ubuntu-22.04
 
     steps:
-    - name: 🛎️ Checkout workflow repository
+    - name: 🛎️ Checkout the repository that contains this workflow
       uses: actions/checkout@v4
+
+    - name: ⬇️ Clone the Yacd-meta source code
+      run: git clone --depth=1 https://github.com/MetaCubeX/Yacd-meta.git
 
     - name: 📦 Install pnpm
       uses: pnpm/action-setup@v4
       with:
         version: 9
 
-    - name: 🧰 Setup Node.js
+    - name: 🧰 Setup Node.js and cache dependencies
       uses: actions/setup-node@v4
       with:
         node-version: 20
         cache: 'pnpm'
-
-    - name: ⬇️ Clone Yacd-meta source
-      run: git clone --depth=1 https://github.com/MetaCubeX/Yacd-meta.git
+        cache-dependency-path: Yacd-meta/pnpm-lock.yaml
 
     - name: 📥 Install dependencies
       working-directory: ./Yacd-meta
-      run: pnpm install
+      run: pnpm install --frozen-lockfile
 
     - name: 🏗️ Build project (vite)
       working-directory: ./Yacd-meta
@@ -37,10 +38,11 @@ jobs:
 
     - name: 📦 Zip build output
       working-directory: ./Yacd-meta
-      run: zip -r ../dashboard.zip public/
+      run: zip -r dashboard.zip public/
 
-    - name: 📤 Upload dashboard.zip
+    - name: 📤 Upload dashboard artifact
       uses: actions/upload-artifact@v4
       with:
         name: dashboard
-        path: dashboard.zip
+        path: Yacd-meta/dashboard.zip
+
