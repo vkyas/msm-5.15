@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-22.04
 
     steps:
-    - name: 🛎️ Checkout the repository that contains this workflow
+    - name: 🛎️ Checkout
       uses: actions/checkout@v4
 
     - name: ⬇️ Clone the Yacd-meta source code
@@ -21,7 +21,7 @@ jobs:
       with:
         version: 9
 
-    - name: 🧰 Setup Node.js and cache dependencies
+    - name: 🧰 Setup Node.js
       uses: actions/setup-node@v4
       with:
         node-version: 20
@@ -30,9 +30,9 @@ jobs:
 
     - name: 📥 Install dependencies
       working-directory: ./Yacd-meta
-      run: pnpm install --frozen-lockfile
+      run: pnpm i
 
-    - name: 🏗️ Build project (vite)
+    - name: 🏗️ Build project
       working-directory: ./Yacd-meta
       run: pnpm build
 
