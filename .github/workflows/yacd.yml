@@ -1,9 +1,8 @@
-name: Yacd-meta
+name: Build Yacd-meta
 
 on:
   push:
-    branches:
-      - master
+    branches: [master]
   workflow_dispatch:
 
 jobs:
@@ -11,17 +10,19 @@ jobs:
     runs-on: ubuntu-22.04
 
     steps:
-    - name: Checkout repository
+    - name: Checkout source
       uses: actions/checkout@v4
 
-    - name: Set up Node.js
+    - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
         node-version: 20
         cache: 'pnpm'
 
     - name: Install pnpm
-      run: npm install -g pnpm
+      uses: pnpm/action-setup@v3
+      with:
+        version: 10.12.1
 
     - name: Install dependencies
       run: pnpm install
