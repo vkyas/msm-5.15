@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-22.04
 
     steps:
-    - name: 🛎️ Checkout source
+    - name: 🛎️ Checkout workflow repository
       uses: actions/checkout@v4
 
     - name: 📦 Install pnpm
@@ -22,15 +22,22 @@ jobs:
       uses: actions/setup-node@v4
       with:
         node-version: 20
+        cache: 'pnpm'
+
+    - name: ⬇️ Clone Yacd-meta source
+      run: git clone --depth=1 https://github.com/MetaCubeX/Yacd-meta.git
 
     - name: 📥 Install dependencies
+      working-directory: ./Yacd-meta
       run: pnpm install
 
     - name: 🏗️ Build project (vite)
+      working-directory: ./Yacd-meta
       run: pnpm build
 
     - name: 📦 Zip build output
-      run: zip -r dashboard.zip public/
+      working-directory: ./Yacd-meta
+      run: zip -r ../dashboard.zip public/
 
     - name: 📤 Upload dashboard.zip
       uses: actions/upload-artifact@v4
