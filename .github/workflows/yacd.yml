@@ -33,14 +33,18 @@ jobs:
         cache: 'pnpm'
         cache-dependency-path: './Yacd-meta/pnpm-lock.yaml'
 
-    - name: Install pnpm
-      run: npm install -g pnpm
+    - name: Install pnpm in Yacd-meta directory
+      run: |
+        corepack enable
+        corepack prepare pnpm@latest --activate
+        pnpm --version
+      working-directory: ./Yacd-meta
 
     - name: Verify pnpm
       run: |
         pnpm --version
         which pnpm
-      working-directory: .
+      working-directory: ./Yacd-meta
 
     - name: Install dependencies
       run: pnpm install
