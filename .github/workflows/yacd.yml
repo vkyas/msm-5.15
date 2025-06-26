@@ -1,68 +1,39 @@
-name: Build Yacd-meta
+name: Yacd-meta
 
 on:
   push:
-    branches: [ main ]
-  pull_request:
+    branches:
+      - master
+  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-22.04
 
     steps:
-    - name: Checkout this workflow repo
+    - name: Checkout repository
       uses: actions/checkout@v4
 
-    - name: Clone Yacd-meta source
-      run: |
-        git clone --depth=1 https://github.com/MetaCubeX/Yacd-meta.git
-        ls -la
-        [ -d Yacd-meta ] && echo "Yacd-meta directory exists" || { echo "Yacd-meta directory missing"; exit 1; }
-      working-directory: .
-
-    - name: Change to Yacd-meta directory
-      run: |
-        cd Yacd-meta
-        pwd
-      working-directory: .
-
-    - name: Setup Node.js
+    - name: Set up Node.js
       uses: actions/setup-node@v4
       with:
-        node-version: '20'
+        node-version: 20
         cache: 'pnpm'
-        cache-dependency-path: './Yacd-meta/pnpm-lock.yaml'
 
-    - name: Install pnpm in Yacd-meta directory
-      run: |
-        corepack enable
-        corepack prepare pnpm@latest --activate
-        pnpm --version
-      working-directory: ./Yacd-meta
-
-    - name: Verify pnpm
-      run: |
-        pnpm --version
-        which pnpm
-      working-directory: ./Yacd-meta
+    - name: Install pnpm
+      run: npm install -g pnpm
 
     - name: Install dependencies
       run: pnpm install
-      working-directory: ./Yacd-meta
 
     - name: Build project
       run: pnpm build
-      working-directory: ./Yacd-meta
 
-    - name: Zip dist folder
-      run: |
-        cd Yacd-meta/dist
-        zip -r ../../yacd-meta.zip .
-        cd ../..
-      working-directory: .
+    - name: Zip output
+      run: zip -r dashboard.zip public/
 
-    - name: Upload artifact (ZIP)
+    - name: Upload artifact
       uses: actions/upload-artifact@v4
       with:
-        name: yacd-meta
-        path: yacd-meta.zip
+        name: dashboard
+        path: dashboard.zip
